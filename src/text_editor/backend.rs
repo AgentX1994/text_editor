@@ -151,27 +151,36 @@ impl Backend {
                         destination_line.push_str(&removed_line);
                     }
                 } else {
-                    let c = self
+                    let _ = self
                         .content
                         .get_mut(self.cursor_row)
                         .expect("Cursor went beyong available rows!")
                         .pop();
                     self.cursor_column = self.cursor_column.saturating_sub(1);
-                    println!("Backspace performed! Removed character: {c:?}");
                 }
             }
         }
     }
 
     pub fn content(&self) -> String {
+        // TODO: find a better way to render the text
+        // TODO: Configurable tab width
+        // TODO: Configurable option to insert spaces instead of tabs
         self.content
             .iter()
-            .map(|s| s.to_owned())
+            .map(|s| s.replace('\t', "    "))
             .collect::<Vec<String>>()
             .join("\n")
     }
 
     pub fn get_cursor_position(&self) -> (usize, usize) {
-        (self.cursor_row, self.cursor_column)
+        // TODO: Fix this dirty hack to deal with my auto-replacement
+        // of tabs with spaces
+        let line = self
+            .content
+            .get(self.cursor_row)
+            .expect("Cursow went beyond available rows!");
+        let fixed_column = line[0..self.cursor_column].replace('\t', "    ").len();
+        (self.cursor_row, fixed_column)
     }
 }

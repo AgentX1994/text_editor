@@ -85,7 +85,6 @@ pub struct TextEditor<'a> {
 
 impl<'a> TextEditor<'a> {
     pub fn new(backend: &'a Mutex<Backend>) -> Self {
-        println!("Creating Text Editor!");
         Self {
             backend,
             padding: Padding::new(0.0),
@@ -299,7 +298,6 @@ where
                             status = Status::Captured;
                         }
                         KeyCode::Backspace => {
-                            println!("Backspace pressed!");
                             backend.action(Action::Backspace);
                             status = Status::Captured;
                         }
@@ -313,16 +311,12 @@ where
             }
             Event::Keyboard(KeyEvent::CharacterReceived(character)) => {
                 if state.is_focused {
-                    println!("Char received: {character}");
                     backend.action(Action::Insert(character));
                     status = Status::Captured;
                 }
             }
-            Event::Mouse(_event) => {
-                // println!("Mouse event: {:?}", event)
-            }
+            Event::Mouse(_event) => {}
             Event::Window(event) => {
-                println!("Window Event: {:?}", event);
                 match event {
                     WindowEvent::Resized {
                         width: _width,
