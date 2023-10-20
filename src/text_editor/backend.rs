@@ -61,7 +61,7 @@ impl Backend {
                         .get_mut(self.cursor_row)
                         .expect("Cursor went beyond available rows!");
                     line.remove(self.cursor_column);
-                } else if self.cursor_row < self.content.len() {
+                } else if self.cursor_row < self.content.len().saturating_sub(1) {
                     let source_line = self.content.remove(self.cursor_row);
                     self.content
                         .get_mut(self.cursor_row)
