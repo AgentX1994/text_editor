@@ -151,12 +151,12 @@ impl Backend {
                         destination_line.push_str(&removed_line);
                     }
                 } else {
-                    let _ = self
+                    let line = self
                         .content
                         .get_mut(self.cursor_row)
-                        .expect("Cursor went beyong available rows!")
-                        .pop();
+                        .expect("Cursor went beyong available rows!");
                     self.cursor_column = self.cursor_column.saturating_sub(1);
+                    line.remove(self.cursor_column);
                 }
             }
         }
